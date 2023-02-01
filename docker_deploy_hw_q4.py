@@ -26,4 +26,4 @@ print(
 if __name__ == "__main__":
     gsc_git_dep.apply()
 
-# prefect deployment run etl-web-to-gcs/github-flow-hw-q4 --params '{"color":"green", "year":2019, "month":11}'
+# prefect deployment run etl-parent/github-flow-hw-q4 --params '{"color":"green", "year":2020, "months":[11]}'
