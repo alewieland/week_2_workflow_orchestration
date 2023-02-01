@@ -46,7 +46,7 @@ def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
 @task(log_prints=True)
 def write_gcs(path: Path) -> None:
     gcp_block = GCS.load("prefect-gcs-2023")
-    gcp_block.upload_from_path(from_path=path, to_path=path)
+    gcp_block.put_directory(local_path=path, to_path=path)
     print("Loaded data to GCS...Hooray!")
     return
 
