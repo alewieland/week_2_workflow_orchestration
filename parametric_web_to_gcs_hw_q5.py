@@ -4,6 +4,7 @@ from pathlib import Path
 import urllib.request
 import pandas as pd
 from prefect import task, flow
+from prefect_gcp.cloud_storage import GcsBucket
 from prefect.filesystems import GCS
 from datetime import timedelta
 from prefect.tasks import task_input_hash
@@ -32,15 +33,16 @@ def tweak(df: pd.DataFrame) -> pd.DataFrame:
 # Write DataFrame to a specific folder after tweaking the DataFrame
 @task(log_prints=True, name="write-to-local-file")
 def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
-    path_name = Path(f"data/{color}/{dataset_file}.parquet")
-    return path_name 
+    path_name = f"data/data/{color}/{dataset_file}.parquet"
+    df.to_parquet(path_name, compression="gzip")
+    return path_name
 
 
 # Upload local parquet file to GCS
 @task(log_prints=True)
 def write_gcs(path: Path) -> None:
-    gcp_block = GCS.load("prefect-gcs-2023")
-    gcp_block.put_directory(local_path=path, to_path=path)
+    gcp_block = GCS.load("prefect-gcs-block")
+    gcp_block.put_directory(from_path=path, to_path=path)
     print("Loaded data to GCS...Hooray!")
     return
 
@@ -78,3 +80,4 @@ if __name__ == "__main__":
     etl_parent_flow(color, year, months)
 
 # Source: https://prefecthq.github.io/prefect-gcp/
+# prefect block register -m prefect_gcp
