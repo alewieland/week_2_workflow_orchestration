@@ -32,14 +32,14 @@ def tweak(df: pd.DataFrame) -> pd.DataFrame:
 # Write DataFrame to a specific folder after tweaking the DataFrame
 @task(log_prints=True, name="write-to-local-file")
 def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
-    directory = PurePath(f"data/data/{color}")
+    directory = str(Path(f"data/data/{color}")).as_posix()
     path_name = directory / f"{dataset_file}.parquet"
     try:
         os.makedirs(directory, exist_ok=True)
         df.to_parquet(path_name, compression="gzip")
     except OSError as error:
         print(error)
-    return path_name
+    return path_name 
 
 
 # Upload local parquet file to GCS
