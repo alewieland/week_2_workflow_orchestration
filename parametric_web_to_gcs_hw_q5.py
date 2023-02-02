@@ -1,6 +1,6 @@
 # imports
 import os
-from pathlib import Path
+from pathlib import Path, PurePath
 import urllib.request
 import pandas as pd
 from prefect import task, flow
@@ -32,7 +32,7 @@ def tweak(df: pd.DataFrame) -> pd.DataFrame:
 # Write DataFrame to a specific folder after tweaking the DataFrame
 @task(log_prints=True, name="write-to-local-file")
 def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
-    directory = Path(f"data/data/{color}")
+    directory = PurePath(f"data/data/{color}")
     path_name = directory / f"{dataset_file}.parquet"
     try:
         os.makedirs(directory, exist_ok=True)
