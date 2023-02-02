@@ -1,14 +1,12 @@
 # Week 2 | Homework
 # from prefect orion
 # import
-from prefect.infrastructure.docker import DockerContainer
+from prefect.filesystems import GitHub
 from prefect.deployments import Deployment
 from parametric_web_to_gcs_hw_q5 import etl_parent_flow
-from prefect.filesystems import GitHub
 
 # Set-up Infrastructure
 github_block = GitHub.load("prefect-github-block")
-
 
 # https://docs.prefect.io/api-ref/prefect/deployments/#prefect.deployments.Deployment.build_from_flow
 
