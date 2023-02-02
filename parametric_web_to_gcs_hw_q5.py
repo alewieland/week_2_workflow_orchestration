@@ -1,6 +1,6 @@
 # imports
 import os
-from pathlib import Path, PurePath
+from pathlib import Path
 import urllib.request
 import pandas as pd
 from prefect import task, flow
